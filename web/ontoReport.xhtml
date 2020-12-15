@@ -1,0 +1,93 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/ontologyMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <h:form>
+                <ol class="breadcrumb">
+                    <li>
+                        <h:commandLink action="#{ontobean.backToOntologies}">
+                            #{msgs.mainmenu_onto_repo}
+                        </h:commandLink>
+                    </li>
+                    <li class="active">#{msgs.menu_general_report}</li>
+                </ol>
+            </h:form>
+            <div class="well">
+                <h2><b>#{ontobean.onto.name}</b></h2>
+                <h5>#{ontobean.onto.description}</h5>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ui:repeat value="#{cccbean.allCCC}" var="ccc">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <b>
+                                    <h:outputText value="#{ccc.name}"/>
+                                    <h:outputText value=" (#{msgs.lb_nonfunctional_type}, " rendered="#{ccc.nonFunctional}"/>
+                                    <h:outputText value=" (#{msgs.lb_functional_type}, " rendered="#{ccc.functional}"/>
+                                    <h:outputText value="#{msgs.lb_ccc_not_specified_priority})" rendered="#{ccc.notSpecified}"/>
+                                    <h:outputText value="#{msgs.lb_ccc_low_priority})" rendered="#{ccc.priorityLow}"/>
+                                    <h:outputText value="#{msgs.lb_ccc_medium_priority})" rendered="#{ccc.priorityMedium}"/>
+                                    <h:outputText value="#{msgs.lb_ccc_high_priority})" rendered="#{ccc.priorityHigh}"/>
+                                </b>
+                            </div>
+                            <div class="panel-body">
+                                <h:panelGroup rendered="#{not empty kwbean.getAllKeywordsByCCC(ccc)}">
+                                    <b><h:outputText value="#{msgs.rp_lb_keywords}"/>:</b>
+                                    <ui:repeat value="#{kwbean.getAllKeywordsByCCC(ccc)}" var="kw" varStatus="status">
+                                        <h:outputText value=" #{kw.name}"/>
+                                        <h:outputText value=", " rendered="#{not status.last}"/>
+                                    </ui:repeat>
+                                    <br/>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{not empty sbean.getAllSourcesByCCC(ccc)}">
+                                    <b>#{msgs.rp_lb_sources}:</b>
+                                    <ui:repeat value="#{sbean.getAllSourcesByCCC(ccc)}" var="source" varStatus="status">
+                                        <h:outputText value=" #{source.name}"/>
+                                        <h:outputText value=" (#{msgs.lb_source_catalogue})" rendered="#{source.catalogue}"/>
+                                        <h:outputText value=" (#{msgs.lb_source_businessdoc})" rendered="#{source.businessdoc}"/>
+                                        <h:outputText value=" (#{msgs.lb_source_stakeholder})" rendered="#{source.stakeholder}"/>
+                                        <h:outputText value=", " rendered="#{not status.last}"/>
+                                    </ui:repeat>
+                                    <br/>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{not empty relatbean.getAllDependencies(ccc)}">
+                                    <b>#{msgs.rp_lb_dependency}: </b>
+                                    <ui:repeat value="#{relatbean.getAllDependencies(ccc)}" var="relat" varStatus="status">
+                                        <h:outputText value="#{relat.target.name}"/>
+                                        <h:outputText value=", " rendered="#{not status.last}"/>
+                                    </ui:repeat>
+                                    <br/>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{not empty relatbean.getAllNegativeContributions(ccc)}">
+                                    <b>#{msgs.rp_lb_neg_contribution}: </b>
+                                    <ui:repeat value="#{relatbean.getAllNegativeContributions(ccc)}" var="relat" varStatus="status">
+                                        <h:outputText value="#{relat.target.name}"/>
+                                        <h:outputText value=", " rendered="#{not status.last}"/>
+                                    </ui:repeat>
+                                    <br/>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{not empty relatbean.getAllPositiveContributions(ccc)}">
+                                    <b>#{msgs.rp_lb_pos_contribution}: </b>
+                                    <ui:repeat value="#{relatbean.getAllPositiveContributions(ccc)}" var="relat" varStatus="status">
+                                        <h:outputText value="#{relat.target.name}"/>
+                                        <h:outputText value=", " rendered="#{not status.last}"/>
+                                    </ui:repeat>
+                                    <br/>
+                                </h:panelGroup>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </div>
+        </div>
+    </ui:define>   
+</ui:composition>

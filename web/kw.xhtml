@@ -1,0 +1,131 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/cccMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <h:form>
+                <ol class="breadcrumb">
+                    <li>
+                        <h:commandLink action="#{ontobean.backToOntologies}">
+                            #{msgs.mainmenu_onto_repo}
+                        </h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink action="#{cccbean.backToCCC}">
+                            #{msgs.ontomenu_ccc}
+                        </h:commandLink>
+                    </li>
+                    <li class="active">#{msgs.ontomenu_keywords}</li>
+                </ol>
+            </h:form>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newKw">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_new_kw}
+                            </button>
+                            #{' '}
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateStopwords">
+                                <span class="glyphicon glyphicon-text-color"></span>
+                                #{msgs.button_update_stopwords}
+                            </button>
+                        </div>
+                        <div class="panel-body">
+                            <ui:include src="/WEB-INF/kwList.xhtml" rendered="#{not empty kwbean.allKeywords}"/>
+                            <h:outputText value="#{msgs.no_keywords_message}" rendered="#{empty kwbean.allKeywords}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- add new ccc modal -->
+            <h:form>
+                <div class="modal fade" id="newKw" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    <span class="glyphicon glyphicon-font"></span>
+                                    #{msgs.pt_add_kw}
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_kw_name} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{kwbean.kw.name}"
+                                                     requiredMessage="#{msgs.err_rf_kw_name}"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingOne">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                    <h:outputText value="#{msgs.hint_kw_wildcards_title}" escape="false"/>                                                                                                                        
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                            <div class="panel-body">
+                                                <h:outputText value="#{msgs.hint_kw_wildcards_body}" escape="false"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingTwo">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                    <h:outputText value="#{msgs.hint_kw_similarity_title}" escape="false"/>                                                                                                                        
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                            <div class="panel-body">
+                                                <h:outputText value="#{msgs.hint_kw_similarity_body}" escape="false"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingThree">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                    <h:outputText value="#{msgs.hint_kw_logic_title}" escape="false"/>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                            <div class="panel-body">
+                                                <h:outputText value="#{msgs.hint_kw_logic_body}" escape="false"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                #{msgs.mandatory_fields}
+                                <h:commandLink class="btn btn-primary" action="#{kwbean.saveKeyword}">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_save}
+                                </h:commandLink>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>   
+</ui:composition>

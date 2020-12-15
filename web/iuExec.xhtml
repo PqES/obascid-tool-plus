@@ -1,0 +1,58 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/iuMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <h:form>
+                <ol class="breadcrumb">
+                    <li>                  
+                        <h:commandLink action="#{projbean.backToProjects}">
+                            #{msgs.mainmenu_project_repo}
+                        </h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink action="#{iubean.backToIdentificationUnits}">
+                            #{msgs.projmenu_iu}
+                        </h:commandLink>
+                    </li>
+                    <li class="active">#{msgs.projmenu_iu_exec}</li>
+                </ol>
+            </h:form>
+            <h:form>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h:panelGroup rendered="#{not empty iubean.allIdentificationUnitCCC}">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <h:outputText value="#{msgs.select_ccc_message}"/>
+                                </div>
+                                <div class="panel-body">
+                                    <ui:include src="/WEB-INF/iucccList.xhtml"/>
+                                </div>
+                                <div class="panel-footer">
+                                    <h:commandLink class="btn btn-success">
+                                        <span class="glyphicon glyphicon-option-vertical"></span>
+                                        #{msgs.button_select_all_ccc}
+                                    </h:commandLink>
+                                    #{'  '}
+                                    <h:commandLink class="btn btn-success" action="#{iubean.executeIdentificationUnit}">
+                                        <span class="glyphicon glyphicon-play"></span>
+                                        #{msgs.button_iu_execution}
+                                    </h:commandLink>
+                                </div>
+                            </div>
+                        </h:panelGroup>
+                        <h:outputText value="#{msgs.no_iuccc_message}" rendered="#{empty iubean.allIdentificationUnitCCC}"/>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>   
+</ui:composition>

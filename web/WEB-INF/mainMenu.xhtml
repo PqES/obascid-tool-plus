@@ -1,0 +1,106 @@
+<ui:fragment 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:form>
+        <div id="navbar" class="collapse navbar-collapse">
+            <h:panelGroup rendered="#{resbean.logged}">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <h:commandLink action="#{ontobean.backToOntologies}">
+                            <img type="image/ico" src="images/favicon.ico"/>
+                            #{msgs.mainmenu_onto_repo}
+                        </h:commandLink>
+                    </li>
+                    <li>                
+                        <h:commandLink action="#{projbean.backToProjects}">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                            #{msgs.mainmenu_project_repo}
+                        </h:commandLink>
+                    </li>                       
+                    <li>                
+                        <h:commandLink action="ontoRepository">
+                            <span class="glyphicon glyphicon-save-file"></span>
+                            #{msgs.menu_repositories}
+                        </h:commandLink>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-user"></span>
+                            <b>#{resbean.resSession.name}</b>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a data-toggle="modal" href="#updateProfile" data-placement="top">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                    #{msgs.resmenu_update_profile}
+                                </a>
+                            </li>
+                            <li>
+                                <a data-toggle="modal" href="#updateStopwords" data-placement="top">
+                                    <span class="glyphicon glyphicon-text-color"></span>
+                                    #{msgs.button_update_stopwords}
+                                </a>
+                            </li>
+                            <li>
+                                <a data-toggle="modal" href="#settings" data-placement="top">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                    #{msgs.resmenu_settings}
+                                </a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a data-toggle="modal" href="#iconsList" data-placement="top">
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                    #{msgs.resmenu_icons_list}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#{msgs.evaluation_form}" target="_blank">
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    #{msgs.resmenu_evaluate}
+                                </a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a data-toggle="modal" href="#logoff" data-placement="top">
+                                    <span class="glyphicon glyphicon-off"></span>
+                                    #{msgs.resmenu_logoff}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{not resbean.logged}">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a data-toggle="modal" href="#newResearcher" data-placement="top">
+                            <span class="glyphicon glyphicon-user"></span>
+                            #{msgs.mainmenu_new_researcher}
+                        </a>
+                    </li>
+                    <li>                
+                        <h:commandLink action="ontoRepository">
+                            <span class="glyphicon glyphicon-save-file"></span>
+                            #{msgs.menu_repositories}
+                        </h:commandLink>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>                
+                        <a data-toggle="modal" href="#login" data-placement="top">
+                            <span class="glyphicon glyphicon-log-in"></span>
+                            #{msgs.mainmenu_login}
+                        </a>
+                    </li>                       
+                </ul>
+            </h:panelGroup>
+        </div>
+    </h:form>
+</ui:fragment>
+

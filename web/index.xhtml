@@ -1,0 +1,178 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/mainMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body">   
+        <div class="container">
+            <div class="well">
+                <h:outputText value="#{msgs.welcome_text}" escape="false"/>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div href="#" class="thumbnail" style="height: 356px">
+                        <img src="images/logo_onto.png" style="height: 150px; width: 50%; display: block;" alt="sss"/>
+                        <div class="caption">
+                            <h2>#{msgs.onto_repo_title}</h2>
+                            <p>#{msgs.onto_repo_body}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div href="#" class="thumbnail" style="height: 356px">
+                        <img src="images/logo_project.png" style="height: 150px; width: 60%; display: block;" alt="sss"/>
+                        <div class="caption">
+                            <h2>#{msgs.project_repo_title}</h2>
+                            <p>#{msgs.project_repo_body}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div href="#" class="thumbnail" style="height: 356px">
+                        <img src="images/logo_mypage.png" style="height: 150px; width: 50%; display: block;" alt="sss"/>
+                        <div class="caption">
+                            <h2>#{msgs.mypage_title}</h2>
+                            <p>#{msgs.mypage_body}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- add reseacher modal -->
+        <h:form>
+            <div class="modal fade" id="newResearcher" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                <span class="glyphicon glyphicon-user"></span>
+                                #{msgs.pt_add_researcher}
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_name} *"/>
+                                    <h:inputText required="true" class="form-control"
+                                                 value="#{resbean.res.name}"
+                                                 requiredMessage="#{msgs.err_rf_researcher_name}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_email} *"/>
+                                    <h:inputText required="true" class="form-control"
+                                                 value="#{resbean.res.email}"
+                                                 requiredMessage="#{msgs.err_rf_researcher_email}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_institution}"/>
+                                    <h:inputText class="form-control"
+                                                 value="#{resbean.res.filiation.institution}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_city}"/>
+                                    <h:inputText class="form-control"
+                                                 value="#{resbean.res.filiation.city}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_state}"/>
+                                    <h:inputText class="form-control"
+                                                 value="#{resbean.res.filiation.state}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_country}"/>
+                                    <h:inputText class="form-control"
+                                                 value="#{resbean.res.filiation.country}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_password} *"/>
+                                    <h:inputSecret required="true" class="form-control"
+                                                   value="#{resbean.res.password}"
+                                                   requiredMessage="#{msgs.err_rf_researcher_password}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_confirm_password} *"/>
+                                    <h:inputSecret required="true" class="form-control"
+                                                   value="#{resbean.confirmPassword}"
+                                                   requiredMessage="#{msgs.err_rf_researcher_confirm_password}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            #{msgs.mandatory_fields}
+                            <h:commandLink class="btn btn-primary" action="#{resbean.saveResearcher}">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_save}
+                            </h:commandLink>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+        <!-- login modal -->
+        <h:form>
+            <div class="modal fade" id="login" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                <span class="glyphicon glyphicon-log-in"></span>
+                                #{msgs.pt_login}
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_email} *"/>
+                                    <h:inputText required="true" class="form-control"
+                                                 value="#{resbean.res.email}"
+                                                 requiredMessage="#{msgs.err_rf_researcher_email}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_password} *"/>
+                                    <h:inputSecret required="true" class="form-control"
+                                                   value="#{resbean.res.password}"
+                                                   requiredMessage="#{msgs.err_rf_researcher_password}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            #{msgs.mandatory_fields}
+                            <h:commandLink class="btn btn-primary" action="#{resbean.login}">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_login}
+                            </h:commandLink>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>   
+</ui:composition>

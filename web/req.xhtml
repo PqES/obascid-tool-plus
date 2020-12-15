@@ -1,0 +1,215 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml"
+    xmlns:p="http://primefaces.org/ui">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/reqMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <h:form>
+                <ol class="breadcrumb">
+                    <li>                  
+                        <h:commandLink action="#{projbean.backToProjects}">
+                            #{msgs.mainmenu_project_repo}
+                        </h:commandLink>
+                    </li>
+                    <li class="active">#{msgs.projmenu_requirements}</li>
+                </ol>
+            </h:form>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newRequirement">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_new_requirement}
+                            </button>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newPattern">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_new_pattern}
+                            </button>
+                        </div>
+                        <div class="panel-body">
+                            <ui:include src="/WEB-INF/reqList.xhtml" rendered="#{not empty reqbean.allRequirements}"/>
+                            <h:outputText value="#{msgs.no_requirements_message}" rendered="#{empty reqbean.allRequirements}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- add new requiremen modal -->
+            <h:form>
+                <div class="modal fade" id="newRequirement" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    <span class="glyphicon glyphicon-align-justify"></span>
+                                    #{msgs.pt_add_requirement}
+                                </h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_requirement_name} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{reqbean.req.name}"
+                                                     requiredMessage="#{msgs.err_rf_requirement_name}"/>
+                                    </div>
+                                </div>
+                                <br>
+                                    <div class="row">                            
+                                        <div class="col-md-12">
+                                            <h:outputLabel value="#{msgs.lb_project_pattern}"/>
+                                            <h:selectOneMenu class="form-control" value="#{reqbean.standardId}">
+                                                <f:selectItem itemValue="#{null}" itemLabel="#{msgs.lb_public_select}"/>
+                                                <f:selectItems value="#{stabean.allStandards}" var="sta" 
+                                                               itemLabel="#{sta.name}" 
+                                                               itemValue="#{sta.id}"/>
+                                                <f:ajax listener="#{reqbean.listener}" render="descricao patternMeaning salvarPadrao" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_requirement_desc} *"/>
+                                        <h:inputTextarea id="descricao" required="true" value="#{reqbean.req.description}" style="color: red"
+                                                         requiredMessage="#{msgs.err_rf_requirement_desc}"
+                                                         class="form-control" rows="8"/>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_requirement_type} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{reqbean.req.type}">
+                                            <f:selectItem itemValue="NON_FUNCTIONAL" itemLabel="#{msgs.lb_nonfunctional_type}"/>
+                                            <f:selectItem itemValue="FUNCTIONAL" itemLabel="#{msgs.lb_functional_type}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer" >
+                                #{msgs.mandatory_fields}
+                                <h:commandLink class="btn btn-primary" action="#{reqbean.saveRequirement}">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_save}
+                                </h:commandLink>
+                                
+                                <h:commandLink class="btn btn-default" action="#{reqbean.clearFilter}">                                    
+                                    #{msgs.button_close}
+                                </h:commandLink>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <!-- add new PRS modal -->
+            <h:form>
+                <div class="modal fade" id="newPattern" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"></span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    <span class="glyphicon glyphicon-align-justify"></span>
+                                    #{msgs.pt_add_pattern}
+                                </h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_standard_name} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{stabean.sta.name}"
+                                                     requiredMessage="#{msgs.err_rf_standard_name}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_standard_domain} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{stabean.sta.domain}"
+                                                     requiredMessage="#{msgs.err_rf_standard_domain}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_standard_purpose} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{stabean.sta.purpose}"
+                                                     requiredMessage="#{msgs.err_rf_standard_purpose}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_standard_problem} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{stabean.sta.problem}"
+                                                     requiredMessage="#{msgs.err_rf_standard_problem}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_standard_consequence} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{stabean.sta.consequence}"
+                                                     requiredMessage="#{msgs.err_rf_standard_consequence}"/>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_standard_type} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{stabean.sta.type}">
+                                            <f:selectItem itemValue="NON_FUNCTIONAL" itemLabel="#{msgs.lb_nonfunctional_type}"/>
+                                            <f:selectItem itemValue="FUNCTIONAL" itemLabel="#{msgs.lb_functional_type}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_standard_template} *"/>
+                                        <h:inputTextarea id="descricao" required="true" value="#{stabean.sta.template}" style="color: red"
+                                                         requiredMessage="#{msgs.err_rf_standard_template}"
+                                                         class="form-control" rows="8"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_standard_related_standards} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{stabean.sta.related_standards}"
+                                                     requiredMessage="#{msgs.err_rf_standard_related_standards}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer" >
+                                #{msgs.mandatory_fields}
+                                <h:commandLink class="btn btn-primary" action="#{stabean.saveStandard}">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_save}
+                                </h:commandLink>
+                                 <h:commandLink class="btn btn-default" action="#{stabean.clearFilter}">                                    
+                                    #{msgs.button_close}
+                                </h:commandLink>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>   
+</ui:composition>

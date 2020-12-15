@@ -1,0 +1,113 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/ontologyMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <h:form>                
+                <ol class="breadcrumb">
+                    <li>
+                        <h:commandLink action="#{ontobean.backToOntologies}">
+                            #{msgs.mainmenu_onto_repo}
+                        </h:commandLink>
+                    </li>
+                    <li class="active">#{msgs.ontomenu_relationships}</li>
+                </ol>
+            </h:form>
+            <div class="row">
+                <div class="col-md-12">
+                    <h:panelGroup rendered="#{cccbean.allCCC.size() gt 1}">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newRelat">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_new_relat}
+                                </button>
+                            </div>
+                            <div class="panel-body">
+                                <ui:include src="/WEB-INF/relatList.xhtml"/>
+                                <h:outputText value="#{msgs.no_relat_message}" rendered="#{empty relatbean.allRelationships}"/>
+                            </div>
+                        </div>
+
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{cccbean.allCCC.size() le 1}">
+                        <h:outputText value="#{msgs.no_enough_ccc}"/>
+                    </h:panelGroup>
+                </div>
+            </div>
+
+            <!-- new relat modal -->
+            <h:form id="newRelatForm">
+                <div class="modal fade" id="newRelat" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    <span class="glyphicon glyphicon-link"></span>
+                                    #{msgs.pt_add_relat}
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_relat_source} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{relatbean.relat.source.id}">
+                                            <f:selectItems value="#{cccbean.allCCC}" var="ccc" 
+                                                           itemLabel="#{ccc.name}" 
+                                                           itemValue="#{ccc.id}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_relat_target} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{relatbean.relat.target.id}">
+                                            <f:selectItems value="#{cccbean.allCCC}" var="ccc" itemLabel="#{ccc.name}" itemValue="#{ccc.id}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_relat_type} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{relatbean.relat.type}">
+                                            <f:selectItem itemValue="DEPENDENCY" itemLabel="#{msgs.lb_relat_dependency_type}"/>
+                                            <f:selectItem itemValue="NEGATIVE_CONTRIBUTION" itemLabel="#{msgs.lb_relat_negative_contribution_type}"/>
+                                            <f:selectItem itemValue="POSITIVE_CONTRIBUTION" itemLabel="#{msgs.lb_relat_positive_contribution_type}"/>
+                                            <f:ajax execute="@this" render="newRelatForm:relatMeaning"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <hr/>
+                                        <h:panelGroup id="relatMeaning" >
+                                            <b><h:outputText value="#{msgs.lb_relat_meaning}"/></b>: 
+                                            <h:outputText value=" #{msgs.lb_relat_meaning_dependency} " rendered="#{relatbean.relat.dependency}"/>
+                                            <h:outputText value=" #{msgs.lb_relat_meaning_pos_contribution} " rendered="#{relatbean.relat.positiveContribution}"/>
+                                            <h:outputText value=" #{msgs.lb_relat_meaning_neg_contribution} " rendered="#{relatbean.relat.negativeContribution}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <h:commandLink class="btn btn-primary" action="#{relatbean.saveRelatioship}">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_save}
+                                </h:commandLink>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>   
+</ui:composition>

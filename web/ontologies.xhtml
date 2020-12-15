@@ -1,0 +1,156 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/mainMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">#{msgs.mainmenu_onto_repo}</li>
+            </ol>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newOntology">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_new_ontology}
+                            </button>
+<!--                            #{' '}
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mergeOntologies">
+                                <span class="glyphicon glyphicon-duplicate"></span>
+                                #{msgs.button_merge}
+                            </button>-->
+                        </div>
+                        <div class="panel-body">
+                            <ui:include src="/WEB-INF/ontologyList.xhtml" rendered="#{not empty ontobean.allOntologiesByResearcher}"/>
+                            <h:outputText value="#{msgs.no_ontologies_message}" rendered="#{empty ontobean.allOntologiesByResearcher}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- add new ontology modal -->
+            <h:form>
+                <div class="modal fade" id="newOntology" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    <img type="image/ico" src="images/favicon.ico"/>
+                                    #{msgs.pt_add_ontology}
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_ontology_name} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{ontobean.onto.name}"
+                                                     requiredMessage="#{msgs.err_rf_ontology_name}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_ontology_desc}"/>
+                                        <h:inputTextarea value="#{ontobean.onto.description}"
+                                                         class="form-control" rows="8"/>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_ontology_license} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{ontobean.onto.license}">
+                                            <f:selectItem itemValue="PUBLIC" itemLabel="#{msgs.lb_public_license}"/>
+                                            <f:selectItem itemValue="PRIVATE" itemLabel="#{msgs.lb_private_license}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                #{msgs.mandatory_fields}
+                                <h:commandLink class="btn btn-primary" action="#{ontobean.saveOntology}">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_save}
+                                </h:commandLink>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+            
+            <!-- merge ontologies modal -->
+            <h:form>
+                <div class="modal fade" id="mergeOntologies" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    <span class="glyphicon glyphicon-duplicate"></span>
+                                    #{msgs.pt_merge_ontologies}
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_ontology_merge_o1} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{ontobean.mergeOntology1Id}">
+                                            <f:selectItems value="#{ontobean.allOntologiesByResearcher}" var="onto1" itemLabel="#{onto1.name}" itemValue="#{onto1.id}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_ontology_merge_o2} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{ontobean.mergeOntology2Id}">
+                                            <f:selectItems value="#{ontobean.allOntologiesByResearcher}" var="onto2" itemLabel="#{onto2.name}" itemValue="#{onto2.id}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_ontology_name} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{ontobean.onto.name}"
+                                                     requiredMessage="#{msgs.err_rf_ontology_name}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_ontology_desc}"/>
+                                        <h:inputTextarea value="#{ontobean.onto.description}"
+                                                         class="form-control" rows="8"/>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_ontology_license} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{ontobean.onto.license}">
+                                            <f:selectItem itemValue="PUBLIC" itemLabel="#{msgs.lb_public_license}"/>
+                                            <f:selectItem itemValue="PRIVATE" itemLabel="#{msgs.lb_private_license}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                #{msgs.mandatory_fields}
+                                <h:commandLink class="btn btn-primary" action="#{ontobean.mergeOntology}">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_save}
+                                </h:commandLink>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>   
+</ui:composition>

@@ -1,0 +1,76 @@
+<ui:fragment 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:form>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <h:commandLink action="#{cccbean.backToCCC}">
+                        <span class="glyphicon glyphicon-random"></span>
+                        #{msgs.ontomenu_ccc}
+                    </h:commandLink>
+                </li>
+                <li>
+                    <a href="relat.xhtml">
+                        <span class="glyphicon glyphicon-link"></span>
+                        #{msgs.ontomenu_relationships}
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-save-file"></span>
+                        #{msgs.menu_reports}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="ontoReport.xhtml">
+                                <span class="glyphicon glyphicon-duplicate"></span>
+                                #{msgs.menu_general_report}
+                            </a>
+                        </li>
+                        <li>
+                            <h:commandLink action="#{cccbean.buildRelationshipMatrix}">
+                                <span class="glyphicon glyphicon-screenshot"></span>
+                                #{msgs.ontomenu_relationships_matrix}
+                            </h:commandLink>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <img type="image/ico" src="images/favicon.ico"/>
+                        <b>#{ontobean.onto.name}</b>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a data-toggle="modal" href="#settings" data-placement="top">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                #{msgs.resmenu_settings}
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="modal" href="#iconsList" data-placement="top">
+                                <span class="glyphicon glyphicon-info-sign"></span>
+                                #{msgs.resmenu_icons_list}
+                            </a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <h:commandLink action="#{ontobean.backToOntologies}">
+                                <span class="glyphicon glyphicon-arrow-left"></span>
+                                #{msgs.button_back}
+                            </h:commandLink>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </h:form>
+</ui:fragment>
+

@@ -1,0 +1,54 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/reqMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <h:form>
+                <ol class="breadcrumb">
+                    <li>                  
+                        <h:commandLink action="#{projbean.backToProjects}">
+                            #{msgs.mainmenu_project_repo}
+                        </h:commandLink>
+                    </li>
+                    <li class="active">#{msgs.menu_reports}</li>
+                </ol>
+            </h:form>
+            <div class="well">
+                <h2><b>#{projbean.proj.name}</b></h2>
+                <h5>#{projbean.proj.description}</h5>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ui:repeat value="#{reqbean.allRequirements}" var="req" varStatus="status">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <b><h:outputText value="#{req.name} - #{msgs.lb_functional_type}" rendered="#{req.functional}"/></b>
+                                <b><h:outputText value="#{req.name} - #{msgs.lb_nonfunctional_type}" rendered="#{req.nonFunctional}"/></b>
+                            </div>
+                            <div class="panel-body">
+                                <h:outputText value="#{req.description}"/>
+                            </div>
+                            <h:panelGroup rendered="#{not empty depbean.getBySource(req)}">
+                                <div class="panel-footer">
+                                    <b>#{msgs.rp_lb_dependencies}: </b>
+                                    <ui:repeat value="#{depbean.getBySource(req)}" var="dep" varStatus="status">
+                                        <h:outputText value="#{dep.target.name}"/>
+                                        <h:outputText value=", " rendered="#{not status.last}"/>
+                                    </ui:repeat>
+                                    <br/>
+                                </div>
+                            </h:panelGroup>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </div>
+        </div>
+    </ui:define>   
+</ui:composition>

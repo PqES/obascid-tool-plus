@@ -1,0 +1,263 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/iuMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <h:form>
+                <ol class="breadcrumb">                
+                    <li>                  
+                        <h:commandLink action="#{projbean.backToProjects}">
+                            #{msgs.mainmenu_project_repo}
+                        </h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink action="#{iubean.backToIdentificationUnits}">
+                            #{msgs.projmenu_iu}
+                        </h:commandLink>
+                    </li>
+                    <li class="active">#{msgs.projmenu_iu_result}</li>
+                </ol>
+            </h:form>
+<!--            <h:panelGroup rendered="#{not empty iubean.errorMessages}">
+                <div class="alert alert-danger">
+                    <b>
+                        <a data-toggle="modal" href="#messageCodes">
+                            <span class="glyphicon glyphicon-question-sign"></span>
+                            <h:outputText value=" #{msgs.err_message_title}"/>
+                        </a>
+                    </b>
+                    <ul>
+                        <ui:repeat value="#{iubean.errorMessages}" var="errorMessage">
+                            <li>
+                                <h:outputText value="#{errorMessage}"/>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </div>
+            </h:panelGroup>-->
+            <h:panelGroup rendered="#{not empty iubean.warningMessages}">
+                <div class="alert alert-warning">
+                    <b>
+                        <a data-toggle="modal" href="#messageCodes">
+                            <span class="glyphicon glyphicon-question-sign"></span>
+                            <h:outputText value=" #{msgs.warn_message_title}"/>
+                        </a>
+                    </b>
+                    <ul>
+                        <ui:repeat value="#{iubean.warningMessages}" var="warningMessage">
+                            <li>
+                                <h:outputText value="#{warningMessage}"/>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </div>
+            </h:panelGroup>
+            <div class="well">
+                <h2><b>#{iubean.iu.project.name}</b></h2>
+                <hr/>
+                <h5><b>#{msgs.num_of_selected_ccc}</b>: #{iubean.numOfSelectedCCC}
+                    (
+                    <ui:repeat value="#{iubean.selectedCCC}" var="ccc" varStatus="stSelectedCCC">
+                        <h:outputText value="#{ccc.name}"/>
+                        <h:outputText value=", " rendered="#{not stSelectedCCC.last}"/>
+                    </ui:repeat>
+
+                    )
+                </h5>
+                <h5>
+                    <b>#{msgs.num_of_identified_ccc}</b>: 
+                    <h:outputText value="#{iubean.numOfIdentifiedCCC}; "/>
+                    <h:outputText value="#{iubean.numOfIdentifiedCCC / iubean.numOfSelectedCCC}">
+                        <f:convertNumber type="percent" minFractionDigits="2" maxFractionDigits="2"/>
+                    </h:outputText>
+                    (
+                    <ui:repeat value="#{iubean.identifiedCCC}" var="ccc" varStatus="stIdentifiedCCC">
+                        <h:outputText value="#{ccc.name}"/>
+                        <h:outputText value=", " rendered="#{not stIdentifiedCCC.last}"/>
+                    </ui:repeat>
+                    )
+                </h5>
+                <hr/>
+                <h5><b>#{msgs.num_of_requirements}</b>: #{iubean.numOfRequirements}</h5>
+                <h5>
+                    <b>#{msgs.num_of_affected_requirements}</b>: 
+                    <h:outputText value="#{iubean.numOfAffectedRequirements}; "/>                    
+                    <h:outputText value="#{iubean.numOfAffectedRequirements / iubean.numOfRequirements}">
+                        <f:convertNumber type="percent" minFractionDigits="2" maxFractionDigits="2"/>
+                    </h:outputText>
+                </h5>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h:form>
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newFilter">
+                                    <span class="glyphicon glyphicon-filter"></span>
+                                    #{msgs.button_filter}
+                                </button>
+                                #{' '}
+                                <h:commandLink class="btn btn-primary" action="#{iubean.clearFilter}">
+                                    <span class="glyphicon glyphicon-erase"></span>
+                                    #{msgs.button_clean_filter}
+                                </h:commandLink>
+                            </div>
+                        </div>
+                    </h:form>
+                    <ui:repeat value="#{iubean.indications}" var="indication" varStatus="stII">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <b><h:outputText value="#{indication.req.name} - #{msgs.lb_functional_type}" rendered="#{indication.req.functional}"/></b>
+                                <b><h:outputText value="#{indication.req.name} - #{msgs.lb_nonfunctional_type}" rendered="#{indication.req.nonFunctional}"/></b>
+                            </div>
+                            <div class="panel-body">
+                                <h:outputText value="#{indication.req.description}"/>
+                            </div>
+                            <h:panelGroup rendered="#{not empty indication.cccIndications}">
+                                <div class="panel-footer">
+                                    <ui:repeat value="#{indication.cccIndications}" var="ccc" varStatus="stIICCC">
+                                        <b><h:outputText value="#{ccc.name}: " rendered="#{indication.mainConcern == null or indication.mainConcern.id != ccc.id}"/></b>
+                                        <b><h:outputText value="#{ccc.name} (#{msgs.main_concern}): " rendered="#{indication.mainConcern != null and indication.mainConcern.id == ccc.id}"/></b>
+                                        <h:outputText value="#{ccc.fragments}" escape="false"/>
+                                        <br/>
+                                    </ui:repeat>
+                                </div>
+                            </h:panelGroup>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </div>
+
+            <!-- new filter -->
+            <h:form id="newRelatForm">
+                <div class="modal fade" id="newFilter" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    <span class="glyphicon glyphicon-filter"></span>
+                                    #{msgs.pt_new_filter}
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_main_concern} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{iubean.mainConcernId}">
+                                            <f:selectItems value="#{iubean.selectedCCC}" var="ccc" 
+                                                           itemLabel="#{ccc.name}" 
+                                                           itemValue="#{ccc.id}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_crosscutting_concern} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{iubean.cccId}">
+                                            <f:selectItems value="#{iubean.selectedCCC}" var="ccc" 
+                                                           itemLabel="#{ccc.name}" 
+                                                           itemValue="#{ccc.id}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <h:commandLink class="btn btn-primary" action="#{iubean.filter}">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_save}
+                                </h:commandLink>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <!-- occurrences explanation -->
+            <div class="modal fade" id="messageCodes" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                                #{msgs.pt_occurrences_explanation}
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="hint1">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
+                                                <h:outputText value="#{msgs.hint_non_main_concern_title}" escape="false"/>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseHint1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="hint1">
+                                        <div class="panel-body">
+                                            <h:outputText value="#{msgs.hint_non_main_concern_body}" escape="false"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="hint2">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
+                                                <h:outputText value="#{msgs.hint_non_identified_concern_title}" escape="false"/>                                                                                                                        
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseHint2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="hint2">
+                                        <div class="panel-body">
+                                            <h:outputText value="#{msgs.hint_non_identified_concern_body}" escape="false"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="hint3">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseHint3" aria-expanded="false" aria-controls="collapseHint3">
+                                                <h:outputText value="#{msgs.hint_pos_contribution_title}" escape="false"/>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseHint3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="hint3">
+                                        <div class="panel-body">
+                                            <h:outputText value="#{msgs.hint_pos_contribution_body}" escape="false"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="hint4">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseHint4" aria-expanded="false" aria-controls="collapseHint4">
+                                                <h:outputText value="#{msgs.hint_non_crosscutting_nfc_title}" escape="false"/>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseHint4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="hint4">
+                                        <div class="panel-body">
+                                            <h:outputText value="#{msgs.hint_non_crosscutting_nfc_body}" escape="false"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>   
+</ui:composition>

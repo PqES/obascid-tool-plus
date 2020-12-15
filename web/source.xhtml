@@ -1,0 +1,98 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/cccMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <h:form>
+                <ol class="breadcrumb">
+                    <li>
+                        <h:commandLink action="#{ontobean.backToOntologies}">
+                            #{msgs.mainmenu_onto_repo}
+                        </h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink action="#{cccbean.backToCCC}">
+                            #{msgs.ontomenu_ccc}
+                        </h:commandLink>
+                    </li>
+                    <li class="active">#{msgs.cccmenu_sources}</li>
+                </ol>
+            </h:form>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newSource">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_new_source}
+                            </button>
+                        </div>
+                        <div class="panel-body">
+                            <ui:include src="/WEB-INF/sourceList.xhtml" rendered="#{not empty sbean.allSources}"/>
+                            <h:outputText value="#{msgs.no_sources_message}" rendered="#{empty sbean.allSources}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- new source modal -->
+            <h:form>
+                <div class="modal fade" id="newSource" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                    #{msgs.pt_add_source}
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_source_name} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{sbean.source.name}"
+                                                     requiredMessage="#{msgs.err_rf_source_name}"/>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_source_description}"/>
+                                        <h:inputTextarea value="#{sbean.source.description}"
+                                                         class="form-control" rows="8"/>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_source_type} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{sbean.source.sourceType}">
+                                            <f:selectItem itemValue="CATALOGUE" itemLabel="#{msgs.lb_source_catalogue}"/>
+                                            <f:selectItem itemValue="STAKEHOLDER" itemLabel="#{msgs.lb_source_stakeholder}"/>
+                                            <f:selectItem itemValue="BUSINESS_DOC" itemLabel="#{msgs.lb_source_businessdoc}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                #{msgs.mandatory_fields}
+                                <h:commandLink class="btn btn-primary" action="#{sbean.saveSource}">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_save}
+                                </h:commandLink>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>   
+</ui:composition>

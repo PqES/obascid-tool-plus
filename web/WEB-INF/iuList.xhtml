@@ -1,0 +1,100 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:form>
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <ui:repeat var="iu" value="#{iubean.allIdentificationUnits}" varStatus="status">
+                        <tr>
+                            <td>
+                                <h:commandLink action="#{iubean.executeIdentificationUnit}" title="#{msgs.hint_execute}">
+                                    <f:setPropertyActionListener target="#{iubean.iu}" value="#{iu}"/>
+                                    <span class="glyphicon glyphicon-play"></span>
+                                </h:commandLink>
+                                <a data-toggle="modal" href="#{'#updateIU'}#{status.index}" title="#{msgs.hint_update}">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                                <a data-toggle="modal" href="#{'#removeIU'}#{status.index}" title="#{msgs.hint_remove}">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                                #{iu.name} >> #{iu.ontology.name}
+                            </td>
+                        </tr>
+
+                        <!-- update iu modal -->
+                        <div class="modal fade" id="updateIU#{status.index}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            <span class="glyphicon glyphicon-indent-left"></span>
+                                            #{msgs.pt_update_iu}: #{iu.name}
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h:outputLabel value="#{msgs.lb_iu_name} *"/>
+                                                <h:inputText class="form-control" disabled="true"
+                                                             value="#{iu.name}"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">                            
+                                            <div class="col-md-12">
+                                                <h:outputLabel value="#{msgs.lb_iu_ontology}"/>
+                                                <h:selectOneMenu class="form-control" value="#{iu.ontology.id}">
+                                                    <f:selectItems value="#{ontobean.allOntologiesByResearcher}" var="onto" itemLabel="#{onto.name}" itemValue="#{onto.id}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandLink class="btn btn-primary" action="#{iubean.saveIdentificationUnit}">
+                                            <f:setPropertyActionListener target="#{iubean.iu}" value="#{iu}"/>
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                            #{msgs.button_save}
+                                        </h:commandLink>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- remove iu modal -->
+                        <div class="modal fade" id="removeIU#{status.index}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            <span class="glyphicon glyphicon-indent-left"></span>
+                                            #{msgs.pt_remove_iu}: #{iu.name}
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                #{msgs.iu_are_you_sure_message} <b>#{iu.name}</b>?
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandLink class="btn btn-primary" action="#{iubean.removeIdentificationUnit}">
+                                            <f:setPropertyActionListener target="#{iubean.iu}" value="#{iu}"/>
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                            #{msgs.button_yes}
+                                        </h:commandLink>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_no}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                </tbody>
+            </table>
+        </div>
+    </h:form>
+</ui:fragment>

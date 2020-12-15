@@ -1,0 +1,53 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/repositoryMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <h:form>
+                <ol class="breadcrumb">
+                    <li>
+                        <h:commandLink action="#{ontobean.backToOntologies}" rendered="#{resbean.logged}">
+                            #{msgs.menu_repositories}
+                        </h:commandLink>
+                        <h:commandLink action="index" rendered="#{not resbean.logged}">
+                            #{msgs.menu_repositories}
+                        </h:commandLink>
+                    </li>
+                    <li class="active">#{msgs.menu_project_repository}</li>
+                </ol>
+            </h:form>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h:form>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <h:inputText class="form-control"
+                                                     value="#{repobean.searchProjects}"/>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h:commandLink class="btn btn-success" action="projectRepository">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                            #{msgs.button_search}
+                                        </h:commandLink>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+                        <div class="panel-body">
+                            <ui:include src="/WEB-INF/projectRepositoryList.xhtml" rendered="#{not empty repobean.allProjects}"/>
+                            <h:outputText value="#{msgs.no_public_projects_message}" rendered="#{empty repobean.allProjects}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>   
+</ui:composition>

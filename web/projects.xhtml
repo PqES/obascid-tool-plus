@@ -1,0 +1,84 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/mainMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">#{msgs.mainmenu_project_repo}</li>
+            </ol>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newProject">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_new_project}
+                            </button>
+                        </div>
+                        <div class="panel-body">
+                            <ui:include src="/WEB-INF/projectList.xhtml" rendered="#{not empty projbean.allProjects}"/>
+                            <h:outputText value="#{msgs.no_projects_message}" rendered="#{empty projbean.allProjects}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- new project modal -->
+            <h:form>
+                <div class="modal fade" id="newProject" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                    #{msgs.pt_add_project}
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_project_name} *"/>
+                                        <h:inputText required="true" class="form-control"
+                                                     value="#{projbean.proj.name}"
+                                                     requiredMessage="#{msgs.err_rf_project_name}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_project_desc}"/>
+                                        <h:inputTextarea value="#{projbean.proj.description}"
+                                                         class="form-control" rows="8"/>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_project_license} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{projbean.proj.license}">
+                                            <f:selectItem itemValue="PUBLIC" itemLabel="#{msgs.lb_public_license}"/>
+                                            <f:selectItem itemValue="PRIVATE" itemLabel="#{msgs.lb_private_license}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                #{msgs.mandatory_fields}
+                                <h:commandLink class="btn btn-primary" action="#{projbean.saveProject}">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_save}
+                                </h:commandLink>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>   
+</ui:composition>

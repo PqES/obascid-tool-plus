@@ -1,0 +1,98 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/iuMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <h:form>
+                <ol class="breadcrumb">                
+                    <li>                  
+                        <h:commandLink action="#{projbean.backToProjects}">
+                            #{msgs.mainmenu_project_repo}
+                        </h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink action="#{iubean.backToIdentificationUnits}">
+                            #{msgs.projmenu_iu}
+                        </h:commandLink>
+                    </li>
+                    <li class="active">#{msgs.iumenu_main_concern}</li>
+                </ol>
+            </h:form>
+            <div class="row">
+                <div class="col-md-12">
+                    <h:panelGroup rendered="#{(not empty iubean.selectedRequirements) and (not empty iubean.selectedCCC)}">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newMainConcern">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_new_main_concern}
+                                </button>
+                            </div>
+                            <div class="panel-body">
+                                <ui:include src="/WEB-INF/mainConcernList.xhtml"/>
+                                <h:outputText value="#{msgs.no_main_concern_message}" rendered="#{empty mcbean.allMainConcerns}"/>
+                            </div>
+                        </div>
+
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{(empty iubean.selectedRequirements) or (empty iubean.selectedCCC)}">
+                        <h:outputText value="#{msgs.no_enough_req_or_ccc}"/>
+                    </h:panelGroup>
+                </div>
+            </div>
+
+            <!-- new main concern modal -->
+            <h:form id="newRelatForm">
+                <div class="modal fade" id="newMainConcern" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    <span class="glyphicon glyphicon-link"></span>
+                                    #{msgs.pt_add_main_concern}
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_requirement_name} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{mcbean.mc.requirement.id}">
+                                            <f:selectItems value="#{iubean.selectedRequirements}" var="req" 
+                                                           itemLabel="#{req.name}" 
+                                                           itemValue="#{req.id}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">                            
+                                    <div class="col-md-12">
+                                        <h:outputLabel value="#{msgs.lb_main_concern} *"/>
+                                        <h:selectOneMenu class="form-control" value="#{mcbean.mc.mainConcern.id}">
+                                            <f:selectItems value="#{iubean.selectedCCC}" var="ccc" 
+                                                           itemLabel="#{ccc.name}" 
+                                                           itemValue="#{ccc.id}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <h:commandLink class="btn btn-primary" action="#{mcbean.saveMainConcern}">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    #{msgs.button_save}
+                                </h:commandLink>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>   
+</ui:composition>

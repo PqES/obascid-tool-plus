@@ -1,0 +1,62 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:form>
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <ui:repeat var="relat" value="#{relatbean.allRelationships}" varStatus="status">
+                        <tr>
+                            <td>
+                                <a data-toggle="modal" href="#{'#removeRelat'}#{status.index}" title="#{msgs.hint_remove}">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                                <h:panelGroup rendered="#{relat.dependency}">
+                                    <span class="glyphicon glyphicon-refresh" title="#{msgs.hint_dependency}"></span>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{relat.negativeContribution}">
+                                    <span class="glyphicon glyphicon-resize-full" title="#{msgs.hint_neg_contribution}"></span>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{relat.positiveContribution}">
+                                    <span class="glyphicon glyphicon-resize-small" title="#{msgs.hint_pos_contribution}"></span>
+                                </h:panelGroup>
+                                #{relat.name}
+                            </td>
+                        </tr>
+                        <!-- remove relat modal -->
+                        <div class="modal fade" id="removeRelat#{status.index}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            <span class="glyphicon glyphicon-link"></span>
+                                            #{msgs.pt_remove_relat}: #{relat.name}
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                #{msgs.relat_are_you_sure_message} <b>#{relat.name}</b>?
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandLink class="btn btn-primary" action="#{relatbean.removeRelationship}">
+                                            <f:setPropertyActionListener target="#{relatbean.relat}" value="#{relat}"/>
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                            #{msgs.button_yes}
+                                        </h:commandLink>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_no}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                </tbody>
+            </table>
+        </div>
+    </h:form>
+</ui:fragment>
+

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt_BR"
+      xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:h="http://java.sun.com/jsf/html"    
+      xmlns:f="http://java.sun.com/jsf/core"    
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>            
+
+        <meta name="description" content="#{msgs.app_description}"/>
+        <meta name="author" content="#{msgs.app_author}"/>
+
+        <title>#{msgs.app_title}</title>
+
+        <link rel="shortcut icon" type="image/ico" href="images/favicon.ico"/>
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+
+        <style>
+            body {
+                padding-top: 65px;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.xhtml">#{msgs.app_acronym}</a>
+                </div>
+                <ui:insert name="menu-content"/>
+            </div>
+        </nav>
+        <ui:include src="/WEB-INF/messages.xhtml"/>
+        <ui:insert name="body"/>  
+        <!-- logoff modal -->
+        <h:form>
+            <div class="modal fade" id="logoff" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                <span class="glyphicon glyphicon-off"></span>
+                                #{msgs.resmenu_logoff}
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    #{msgs.logoff_are_you_sure_message}?
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <h:commandLink class="btn btn-primary" action="#{resbean.logoff}">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_yes}
+                            </h:commandLink>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_no}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </h:form>
+
+        <!-- update stopwords modal -->
+        <h:form>
+            <div class="modal fade" id="updateStopwords" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                <span class="glyphicon glyphicon-text-color"></span>
+                                #{msgs.pt_update_stopwords}
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_stopwords} *"/>
+                                    <h:inputTextarea value="#{resbean.resSession.stopwords.stopwords}"
+                                                     required="true"
+                                                     requiredMessage="#{msgs.err_rf_stopwords}"
+                                                     class="form-control" rows="8"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            #{msgs.mandatory_fields}
+                            <h:commandLink class="btn btn-primary" action="#{resbean.updateProfile}">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_save}
+                            </h:commandLink>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <!-- icons list modal -->
+        <h:form>
+            <div class="modal fade" id="iconsList" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                <span class="glyphicon glyphicon-info-sign"></span>
+                                #{msgs.pt_icons_list}
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    #{msgs.hint_update}
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                    #{msgs.hint_remove}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                    #{msgs.hint_public_license}
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-eye-close"></span>
+                                    #{msgs.hint_private_license}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-wrench"></span>
+                                    #{msgs.hint_nonfunctional}
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                    #{msgs.hint_functional}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                    #{msgs.hint_catalogue_source}
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    #{msgs.hint_stakeholder_source}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-briefcase"></span>
+                                    #{msgs.hint_business_document_source}
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-resize-horizontal"></span>
+                                    #{msgs.hint_not_specified_priority}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-arrow-down"></span>
+                                    #{msgs.hint_low_priority}
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-sort"></span>
+                                    #{msgs.hint_medium_priority}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-arrow-up"></span>
+                                    #{msgs.hint_high_priority}
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-log-in"></span>
+                                    #{msgs.hint_getin}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-refresh"></span>
+                                    #{msgs.hint_check_dependencies}
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-resize-full"></span>
+                                    #{msgs.hint_check_contributions}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                    #{msgs.hint_view}
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-refresh"></span>
+                                    #{msgs.hint_dependency}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-resize-full"></span>
+                                    #{msgs.hint_neg_contribution}
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="glyphicon glyphicon-resize-small"></span>
+                                    #{msgs.hint_pos_contribution}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <!-- update profile modal -->
+        <h:form>
+            <div class="modal fade" id="updateProfile" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                <span class="glyphicon glyphicon-user"></span>
+                                #{msgs.pt_update_profile}
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_name} *"/>
+                                    <h:inputText required="true" class="form-control"
+                                                 value="#{resbean.resSession.name}"
+                                                 requiredMessage="#{msgs.err_rf_researcher_name}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_institution}"/>
+                                    <h:inputText class="form-control"
+                                                 value="#{resbean.resSession.filiation.institution}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_city}"/>
+                                    <h:inputText class="form-control"
+                                                 value="#{resbean.resSession.filiation.city}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_state}"/>
+                                    <h:inputText class="form-control"
+                                                 value="#{resbean.resSession.filiation.state}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_researcher_country}"/>
+                                    <h:inputText class="form-control"
+                                                 value="#{resbean.resSession.filiation.country}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            #{msgs.mandatory_fields}
+                            <h:commandLink class="btn btn-primary" action="#{resbean.updateProfile}">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_save}
+                            </h:commandLink>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <!-- settings modal -->
+        <h:form>
+            <div class="modal fade" id="settings" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                #{msgs.pt_settings}
+                            </h4>
+                            <h:outputText value="#{msgs.settings_message}"/>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">                            
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_deault_ontology_license}"/>
+                                    <h:selectOneMenu class="form-control" value="#{resbean.resSession.settings.defaultOntologyLicense}">
+                                        <f:selectItem itemValue="PUBLIC" itemLabel="#{msgs.lb_public_license}"/>
+                                        <f:selectItem itemValue="PRIVATE" itemLabel="#{msgs.lb_private_license}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="row">                            
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_deault_project_license}"/>
+                                    <h:selectOneMenu class="form-control" value="#{resbean.resSession.settings.defaultProjectLicense}">
+                                        <f:selectItem itemValue="PUBLIC" itemLabel="#{msgs.lb_public_license}"/>
+                                        <f:selectItem itemValue="PRIVATE" itemLabel="#{msgs.lb_private_license}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="row">                            
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_deault_requirement_type}"/>
+                                    <h:selectOneMenu class="form-control" value="#{resbean.resSession.settings.defaultRequirementType}">
+                                        <f:selectItem itemValue="NON_FUNCTIONAL" itemLabel="#{msgs.lb_nonfunctional_type}"/>
+                                        <f:selectItem itemValue="FUNCTIONAL" itemLabel="#{msgs.lb_functional_type}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="row">                            
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_deault_ccc_type}"/>
+                                    <h:selectOneMenu class="form-control" value="#{resbean.resSession.settings.defaultCCCType}">
+                                        <f:selectItem itemValue="NON_FUNCTIONAL" itemLabel="#{msgs.lb_nonfunctional_type}"/>
+                                        <f:selectItem itemValue="FUNCTIONAL" itemLabel="#{msgs.lb_functional_type}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="row">                            
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_deault_source_type}"/>
+                                    <h:selectOneMenu class="form-control" value="#{resbean.resSession.settings.defaultSourceType}">
+                                        <f:selectItem itemValue="CATALOGUE" itemLabel="#{msgs.lb_source_catalogue}"/>
+                                        <f:selectItem itemValue="STAKEHOLDER" itemLabel="#{msgs.lb_source_stakeholder}"/>
+                                        <f:selectItem itemValue="BUSINESS_DOC" itemLabel="#{msgs.lb_source_businessdoc}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="row">                            
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_deault_ccc_priority}"/>
+                                    <h:selectOneMenu class="form-control" value="#{resbean.resSession.settings.defaultCCCPriority}">
+                                        <f:selectItem itemValue="NOT_SPECIFIED" itemLabel="#{msgs.lb_ccc_not_specified_priority}"/>
+                                        <f:selectItem itemValue="LOW" itemLabel="#{msgs.lb_ccc_low_priority}"/>
+                                        <f:selectItem itemValue="MEDIUM" itemLabel="#{msgs.lb_ccc_medium_priority}"/>
+                                        <f:selectItem itemValue="HIGH" itemLabel="#{msgs.lb_ccc_high_priority}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="row">                            
+                                <div class="col-md-12">
+                                    <h:outputLabel value="#{msgs.lb_deault_relat_type}"/>
+                                    <h:selectOneMenu class="form-control" value="#{resbean.resSession.settings.defaultRelationshipType}">
+                                        <f:selectItem itemValue="DEPENDENCY" itemLabel="#{msgs.lb_relat_dependency_type}"/>
+                                        <f:selectItem itemValue="NEGATIVE_CONTRIBUTION" itemLabel="#{msgs.lb_relat_negative_contribution_type}"/>
+                                        <f:selectItem itemValue="POSITIVE_CONTRIBUTION" itemLabel="#{msgs.lb_relat_positive_contribution_type}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            #{msgs.mandatory_fields}
+                            <h:commandLink class="btn btn-primary" action="#{resbean.updateProfile}">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                #{msgs.button_save}
+                            </h:commandLink>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+        <ui:include src="/WEB-INF/footer.xhtml"/>
+        <script src="js/jquery-1.11.3.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </h:body>
+</html>

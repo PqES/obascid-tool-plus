@@ -1,0 +1,166 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:form>
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <ui:repeat var="ccc" value="#{cccbean.allCCC}" varStatus="status">
+                        <tr>
+                            <td>
+                                <h:commandLink action="kw" title="#{msgs.hint_getin}">
+                                    <f:setPropertyActionListener target="#{cccbean.ccc}" value="#{ccc}"/>
+                                    <span class="glyphicon glyphicon-log-in"></span>
+                                </h:commandLink>
+                                <a data-toggle="modal" href="#{'#updateCCC'}#{status.index}" title="#{msgs.hint_update}">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                                <a data-toggle="modal" href="#{'#removeCCC'}#{status.index}" title="#{msgs.hint_remove}">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                                <h:panelGroup rendered="#{ccc.functional}">
+                                    <span class="glyphicon glyphicon-cog" title="#{msgs.hint_functional}"></span>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{ccc.nonFunctional}">
+                                    <span class="glyphicon glyphicon-wrench" title="#{msgs.hint_nonfunctional}"></span>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{ccc.notSpecified}">
+                                    <span class="glyphicon glyphicon-resize-horizontal" title="#{msgs.hint_not_specified_priority}"></span>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{ccc.priorityLow}">
+                                    <span class="glyphicon glyphicon-arrow-down" title="#{msgs.hint_low_priority}"></span>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{ccc.priorityMedium}">
+                                    <span class="glyphicon glyphicon-sort" title="#{msgs.hint_medium_priority}"></span>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{ccc.priorityHigh}">
+                                    <span class="glyphicon glyphicon-arrow-up" title="#{msgs.hint_high_priority}"></span>
+                                </h:panelGroup>
+                                <a data-toggle="modal" href="#{'#viewCCC'}#{status.index}" title="#{msgs.hint_view}">
+                                    #{ccc.name}
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- update ccc modal -->
+                        <div class="modal fade" id="updateCCC#{status.index}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            <span class="glyphicon glyphicon-random"></span>
+                                            #{msgs.pt_update_ccc}: #{ccc.name}
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h:outputLabel value="#{msgs.lb_ccc_name} *"/>
+                                                <h:inputText class="form-control" disabled="true"
+                                                             value="#{ccc.name}"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h:outputLabel value="#{msgs.lb_ccc_desc}"/>
+                                                <h:inputTextarea value="#{ccc.description}"
+                                                                 class="form-control" rows="8"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">                            
+                                            <div class="col-md-12">
+                                                <h:outputLabel value="#{msgs.lb_ccc_type} *"/>
+                                                <h:selectOneMenu class="form-control" value="#{ccc.type}">
+                                                    <f:selectItem itemValue="NON_FUNCTIONAL" itemLabel="#{msgs.lb_nonfunctional_type}"/>
+                                                    <f:selectItem itemValue="FUNCTIONAL" itemLabel="#{msgs.lb_functional_type}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="row">                            
+                                            <div class="col-md-12">
+                                                <h:outputLabel value="#{msgs.lb_ccc_priority} *"/>
+                                                <h:selectOneMenu class="form-control" value="#{ccc.priority}">
+                                                    <f:selectItem itemValue="NOT_SPECIFIED" itemLabel="#{msgs.lb_ccc_not_specified_priority}"/>
+                                                    <f:selectItem itemValue="LOW" itemLabel="#{msgs.lb_ccc_low_priority}"/>
+                                                    <f:selectItem itemValue="MEDIUM" itemLabel="#{msgs.lb_ccc_medium_priority}"/>
+                                                    <f:selectItem itemValue="HIGH" itemLabel="#{msgs.lb_ccc_high_priority}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandLink class="btn btn-primary" action="#{cccbean.saveCCC}">
+                                            <f:setPropertyActionListener target="#{cccbean.ccc}" value="#{ccc}"/>
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                            #{msgs.button_save}
+                                        </h:commandLink>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- view ccc modal -->
+                        <div class="modal fade" id="viewCCC#{status.index}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            <span class="glyphicon glyphicon-random"></span>
+                                            #{msgs.pt_view_ccc}: #{ccc.name}
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h:outputLabel value="#{msgs.lb_ccc_desc}"/>:<br/>
+                                                <h:outputText value="#{ccc.description}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_close}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- add remove ccc modal -->
+                        <div class="modal fade" id="removeCCC#{status.index}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            <span class="glyphicon glyphicon-random"></span>
+                                            #{msgs.pt_remove_ccc}: #{ccc.name}
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                #{msgs.ccc_are_you_sure_message} <b>#{ccc.name}</b>?
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandLink class="btn btn-primary" action="#{cccbean.removeCCC}">
+                                            <f:setPropertyActionListener target="#{cccbean.ccc}" value="#{ccc}"/>
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                            #{msgs.button_yes}
+                                        </h:commandLink>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">#{msgs.button_no}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                </tbody>
+            </table>
+        </div>
+    </h:form>
+</ui:fragment>
+

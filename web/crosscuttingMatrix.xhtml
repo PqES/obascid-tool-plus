@@ -1,0 +1,77 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="menu-content">
+        <ui:include src="/WEB-INF/iuMenu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="body"> 
+        <div class="container">
+            <h:form>
+                <ol class="breadcrumb">                
+                    <li>                  
+                        <h:commandLink action="#{projbean.backToProjects}">
+                            #{msgs.mainmenu_project_repo}
+                        </h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink action="#{iubean.backToIdentificationUnits}">
+                            #{msgs.projmenu_iu}
+                        </h:commandLink>
+                    </li>
+                    <li class="active">#{msgs.iumenu_crosscutting_matrix}</li>
+                </ol>
+            </h:form>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <b><h:outputText value="#{msgs.pt_crosscutting_matrix}"/></b>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <h:outputText value="#{msgs.crosscutting_matrix_title}" escape="false"/>
+                                            </th>
+                                            <ui:repeat value="#{iubean.selectedCCC}" var="ccc" varStatus="status">
+                                                <th style="text-align: center;">
+                                                    <h:outputText value="#{status.index + 1}"/>
+                                                </th>
+                                            </ui:repeat>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ui:repeat value="#{iubean.crosscuttingMatrix}" var="internalList" varStatus="i">
+                                            <tr>
+                                                <td>
+                                                    <h:outputText value="#{i.index + 1}: "/>
+                                                    <h:outputText value="#{iubean.selectedCCC[i.index].name}"/>
+                                                </td>
+                                                <ui:repeat value="#{internalList}" var="isCrosscutting">
+                                                    <td class="#{isCrosscutting ? 'danger': ''}" style="text-align: center">
+                                                        <h:panelGroup rendered="#{isCrosscutting}">
+                                                            <span class="glyphicon glyphicon-random" title="#{msgs.hint_crosscutting}"></span>
+                                                        </h:panelGroup>
+                                                        <h:panelGroup rendered="#{not isCrosscutting}">
+                                                            <span class="glyphicon glyphicon-unchecked" title="#{msgs.hint_null_crosscutting}"></span>
+                                                        </h:panelGroup>
+                                                    </td>
+                                                </ui:repeat>
+                                            </tr>
+                                        </ui:repeat>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>   
+</ui:composition>
