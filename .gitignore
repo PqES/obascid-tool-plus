@@ -1,0 +1,14 @@
+/dist/
+/nbproject/private/
+/build/
+/.settings/
+/RemoteSystemsTempFiles/
+/WebContent/
+/.classpath
+/.metadata
+/build.xml
+/.project
+/.tgitconfig
+/RemoteSystemsTempFiles
+/.settings
+/WebContent
